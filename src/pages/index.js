@@ -1,115 +1,51 @@
-import Image from "next/image";
-import localFont from "next/font/local";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const PreloadedAffirmations = [
+    "It’s okay to feel a little scared, but I trust the process. I trust my intuition. I know things are aligning for me.",
+    "I am ready for what I’ve asked for. I trust that it’s already mine, and I welcome it with open arms.",
+    "I trust the process of life. Everything is unfolding in perfect timing. I am exactly where I need to be, and I welcome what’s coming with an open heart.",
+    "I am open to receiving the love and partnership I deserve. I trust myself to navigate this new chapter with grace and excitement. I am ready for all the good things coming my way."
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  // const getRandomAffirmation = () => {
+  //   return preloadedAffirmations[Math.floor(Math.random() * preloadedAffirmations.length)];
+  // };
+
+  const [affirmation, setAffirmation] = useState("");
+  const [affirmations, setAffirmations] = useState(PreloadedAffirmations);
+
+  useEffect(() => {
+    const savedAffirmations = localStorage.getItem("affirmations");
+    if (savedAffirmations) {
+      const combinedAffirmations = [...PreloadedAffirmations, ...JSON.parse(savedAffirmations)];
+      setAffirmations(combinedAffirmations);
+      console.log(combinedAffirmations);
+
+    }
+  }, []);
+
+  useEffect(() => {
+    if (affirmations.length > 0) {
+      setAffirmation(affirmations[Math.floor(Math.random() * affirmations.length)]);
+    }
+  }, [affirmations]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-purple-400 to-blue-500 flex flex-col items-center justify-center p-8">
+      <h1 className="text-4xl font-bold text-white mb-4">COMING SOON!</h1>
+      {/* <p className="text-xl italic text-white mb-6">{affirmation}</p>
+      <button
+        onClick={() => setAffirmation(affirmations[Math.floor(Math.random() * affirmations.length)])}
+        className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition"
+      >
+        Affirm Me Bitch!
+      </button>
+
+      <Link href="/add-affirmation" className="mt-6 text-white underline">Add your own affirmation
+      </Link> */}
     </div>
   );
 }
